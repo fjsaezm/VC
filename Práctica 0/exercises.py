@@ -1,15 +1,18 @@
 import cv2
 import numpy as np
+from matplotlib import pyplot as plt
 
 
 #General functions ----------------------------------------------
+
+def BRG2RGB(image):
+    return cv2.cvtColor(image,cv2.COLOR_BGR2RGB)
 
 def onlyRead(filename,flagColor):
     return cv2.imread(filename,flagColor)
 
 def changePixelValue(image,pixel,newValue):
-    #Remember: axis are changed
-    print(pixel)
+
     image[pixel[1]][pixel[0]] = newValue
     return image
 
@@ -24,9 +27,8 @@ def hconcat_resize_min(im_list, interpolation=cv2.INTER_CUBIC):
 
 def leeimagen(filename,flagColor):
     image = onlyRead(filename,flagColor)
-
-    #Converts BRG to RGB, important
-    cv2.imshow('image', image)
+    #image = BRG2RGB(image)
+    cv2.imshow(filename, image)
     cv2.waitKey(0)
 
     return image
@@ -55,7 +57,6 @@ def modifyPixelsRandom(image,pixels):
     #wont change original picture
     new = np.copy(image)
     for pixel in pixels:
-        print(pixel)
         #Random color for the pixel
         new = changePixelValue(new,pixel,np.random.random()*1000)
 
@@ -64,7 +65,6 @@ def modifyPixelsRandom(image,pixels):
 
 def pintaMITitles(vim,titles):
     title = " - ".join(titles)
-    print(title)
     pintaMI(vim,title)
 
 
@@ -95,6 +95,7 @@ cv2.destroyAllWindows()
 pintaMI([img,img2])
 cv2.destroyAllWindows()
 img3 = onlyRead("images/logoOpenCV.jpg",0)
+#img3 = BRG2RGB(img3)
 pintaMI([img2,img3])
 cv2.destroyAllWindows()
 
