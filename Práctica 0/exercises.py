@@ -1,11 +1,29 @@
 import cv2
-from matplotlib import pyplot as plt
 import numpy as np
 
 
+#General functions ----------------------------------------------
+
+def onlyRead(filename,flagColor):
+    return cv2.imread(filename,flagColor)
+
+def changePixelValue(image,pixel,newValue):
+    #Remember: axis are changed
+    print(pixel)
+    image[pixel[1]][pixel[0]] = newValue
+    return image
+
+#Found on: https://note.nkmk.me/en/python-opencv-hconcat-vconcat-np-tile/. Concats readjusting size
+def hconcat_resize_min(im_list, interpolation=cv2.INTER_CUBIC):
+    h_min = min(im.shape[0] for im in im_list)
+    im_list_resize = [cv2.resize(im, (int(im.shape[1] * h_min / im.shape[0]), h_min), interpolation=interpolation)
+                      for im in im_list]
+    return cv2.hconcat(im_list_resize)
+
+#Exercises ---------------------------------------------
 
 def leeimagen(filename,flagColor):
-    image = cv2.imread(filename,flagColor)
+    image = onlyRead(filename,flagColor)
 
     #Converts BRG to RGB, important
     cv2.imshow('image', image)
@@ -13,54 +31,85 @@ def leeimagen(filename,flagColor):
 
     return image
 
-def pintaI(im):
+def pintaI(im,title = "img"):
 
-    cv2.imshow('matrix',im)
+    cv2.imshow(title,im)
     cv2.waitKey(0)
 
-def pintaMI(vim):
+def pintaMI(vim,title = "imgs"):
 
-    #Added because if it 
-    #h = max(image.shape[0] for image in vim)
-
+    #Make all images BGR, so that they can all be displayed
     for i,im in enumerate(vim):
-        #im.shape contains rows, columns and channel (if image is color). if len = 2, it means there is no color.
-        if len(im.shape)== 2:
+        if len(im.shape) == 2:
             vim[i] = cv2.cvtColor(vim[i],cv2.COLOR_GRAY2BGR)
 
-    #hconcat creates a new imagen concatenating a list of images
-    images = cv2.hconcat(vim)
-    pintaI(images)
+    #Use found function to resize
+    images = hconcat_resize_min(vim)
+    pintaI(images,title)
 
 
-#Flags can be used like:
+#It wont change original picture
+def modifyPixelsRandom(image,pixels):
+    #Lets suppose the image is already read
+
+    #wont change original picture
+    new = np.copy(image)
+    for pixel in pixels:
+        print(pixel)
+        #Random color for the pixel
+        new = changePixelValue(new,pixel,np.random.random()*1000)
+
+    return new
+
+
+def pintaMITitles(vim,titles):
+    title = " - ".join(titles)
+    print(title)
+    pintaMI(vim,title)
+
+
+#Reading image flags can be used like:
 # -  0 is for gray-scale (white and black)
 # -  1 is for colours
 
 #Ejercicio 1
+
 img = leeimagen("images/orapple.jpg",0)
 img2 = leeimagen("images/orapple.jpg",1)
-
 cv2.destroyAllWindows()
 
 #Ejercicio 2
+
 matrix = np.random.random((100, 100))*956
 pintaI(matrix)
 #Normalize
-matrix = matrix / np.linalg.norm(matrix)
+matrix = cv2.normalize(matrix, None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8U)
 pintaI(matrix)
-
 cv2.destroyAllWindows()
 
 #Ejercicio 3
 
-#Si no transformamos las imágenes, obtenemos un error en la función hconcat de esta llamada. El error es:
-#src[i].dims <= 2 && src[i].rows == src[0].rows && src[i].type() == src[0].type() in function 'hconcat'
+"""Si no transformamos las imágenes, obtenemos un error en la función hconcat de esta llamada. El error es:
+#src[i].dims <= 2 && src[i].rows == src[0].rows && src[i].type() == src[0].type() in function 'hconcat' """
 
 pintaMI([img,img2])
-
+cv2.destroyAllWindows()
+img3 = onlyRead("images/logoOpenCV.jpg",0)
+pintaMI([img2,img3])
 cv2.destroyAllWindows()
 
-img3 = leeimagen("images/logoOpenCV.jpg",0)
+#Ejercicio 4
 
-pintaMI([img,img3])
+vector = []
+for i in range(200):
+    vector.append([i,i])
+
+modify = modifyPixelsRandom(img, vector)
+cv2.imshow('mod', modify)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+
+#Ejercicio 5
+
+pintaMITitles([img,img2,img3,modify],["img1","img2","img3","modify"])
