@@ -1,0 +1,6 @@
+# Zip files
+*.zip
+
+#P1 useless files
+P1/latexAndImages
+P1/imagenes-jpg
