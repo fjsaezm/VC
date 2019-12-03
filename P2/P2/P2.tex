@@ -1,0 +1,2151 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
+    
+    \usepackage[sfdefault,scaled=.85, lining]{FiraSans}
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for grffile with XeLaTeX
+    \def\Gread@@xetex#1{%
+      \IfFileExists{"\Gin@base".bb}%
+      {\Gread@eps{\Gin@base.bb}}%
+      {\Gread@@xetex@aux#1}%
+    }
+    \makeatother
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{Práctica 2\\ Convolutional Neural Networks}
+    \author{Javier Sáez Maldonado}
+
+   
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        \ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    \maketitle
+    \newpage
+    
+    \tableofcontents
+    
+    \newpage
+    
+    \section*{Introducción}
+    
+    Durante el próximo documento, abordaremos el problema de construir una \textbf{Red neuronal convolucional}, y tratar de estudiar cómo, dado, un modelo, modificarlo para de diversas formas para tratar de obtener unos buenos resultados en el problema de clasificación de imágenes.
+    
+   	
+    
+
+    
+    \hypertarget{primeras-funciones}{%
+\section{Primeras
+funciones}\label{primeras-funciones}}
+
+   
+
+    \hypertarget{funciones-de-generaciuxf3n-de-datos}{%
+\subsection{Funciones de generación de
+datos}\label{funciones-de-generaciuxf3n-de-datos}}
+
+Vamos a crear ahora varias funciones que harán ``lo mismo'', que es
+devolver un objeto de tipo \emph{ImageDataGenerator}. Comentémoslas antes de añadir todo el código de las mismas. Lo añadismos pues considero que será relevante para el resto de la práctica, pues se usarán en muchas ocasiones.
+
+\begin{itemize}
+\item La primera es simple$\_$datagen, que hará simplemente un objeto de la clase que haga una partición de validación del $10\%$ tamaño total
+
+\item La segunda ,normalize$\_$datagen, además de añadir la validación, hará que las imágenes tengan $\mu = 0$ y $\sigma ^2 = 1$.
+
+\item La tercera, normalize$\_$datagen$\_$test, será igual que la anterior, pero no añadirá el conjunto de validación, pues la utilizaremos para el conjunto de test, en el cual no queremos esta partición
+
+\item La cuarta, data$\_$augmentation$\_$datagen, hará aumento de los datos haciendo inversiones horizontales de las imágenes y haciendo zoom.
+
+\item La quinta, data$\_$augmentation$\_$datagen2, tratará hacer aumento de datos también pero esta vez, hará un relleno del borde (reflejándolo), tratará de girar las imágenes y hacer recortes sobre ellas
+
+\item El últomo modelo,data$\_$augmentation$\_$all, unirá las dos anteriores para futuras pruebas que haremos
+
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{0}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{simple\PYZus{}datagen}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+  \PY{n}{datagen} \PY{o}{=} \PY{n}{ImageDataGenerator}\PY{p}{(}\PY{n}{validation\PYZus{}split} \PY{o}{=} \PY{l+m+mf}{0.1}\PY{p}{)}
+  \PY{k}{return} \PY{n}{datagen}
+
+\PY{k}{def} \PY{n+nf}{normalize\PYZus{}datagen}\PY{p}{(}\PY{p}{)}\PY{p}{:}  
+  \PY{n}{datagen} \PY{o}{=} \PY{n}{ImageDataGenerator}\PY{p}{(}
+    \PY{n}{featurewise\PYZus{}center}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}              \PY{c+c1}{\PYZsh{} set mean = 0}
+    \PY{n}{featurewise\PYZus{}std\PYZus{}normalization}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}   \PY{c+c1}{\PYZsh{} divide data by deviation         }
+    \PY{n}{validation\PYZus{}split} \PY{o}{=} \PY{l+m+mf}{0.1}\PY{p}{)}
+  \PY{k}{return} \PY{n}{datagen}
+
+\PY{k}{def} \PY{n+nf}{normalize\PYZus{}datagen\PYZus{}test}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+  \PY{n}{datagen} \PY{o}{=} \PY{n}{ImageDataGenerator}\PY{p}{(}
+    \PY{n}{featurewise\PYZus{}center}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}              \PY{c+c1}{\PYZsh{} set mean = 0}
+    \PY{n}{featurewise\PYZus{}std\PYZus{}normalization}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}   \PY{c+c1}{\PYZsh{} divide data by deviation         }
+  \PY{p}{)}
+  \PY{k}{return} \PY{n}{datagen}
+
+\PY{k}{def} \PY{n+nf}{data\PYZus{}augmentation\PYZus{}datagen}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+  \PY{n}{datagen} \PY{o}{=} \PY{n}{ImageDataGenerator}\PY{p}{(}
+    \PY{n}{featurewise\PYZus{}center}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}              \PY{c+c1}{\PYZsh{} set mean = 0}
+    \PY{n}{featurewise\PYZus{}std\PYZus{}normalization}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}   \PY{c+c1}{\PYZsh{} divide data by deviation            }
+    \PY{n}{horizontal\PYZus{}flip}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}                 \PY{c+c1}{\PYZsh{} randomly horizontal flip images}
+    \PY{n}{zoom\PYZus{}range} \PY{o}{=} \PY{l+m+mf}{0.2}\PY{p}{,}
+    \PY{n}{validation\PYZus{}split} \PY{o}{=} \PY{l+m+mf}{0.1}\PY{p}{)}
+  \PY{k}{return} \PY{n}{datagen}
+
+\PY{k}{def} \PY{n+nf}{data\PYZus{}augmentation\PYZus{}datagen2}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+  \PY{n}{datagen} \PY{o}{=} \PY{n}{ImageDataGenerator}\PY{p}{(}
+    \PY{n}{featurewise\PYZus{}center}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}              \PY{c+c1}{\PYZsh{} set mean = 0}
+    \PY{n}{featurewise\PYZus{}std\PYZus{}normalization}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}   \PY{c+c1}{\PYZsh{} divide data by deviation            }
+    \PY{n}{fill\PYZus{}mode} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{reflect}\PY{l+s+s1}{\PYZsq{}} \PY{p}{,}               \PY{c+c1}{\PYZsh{} Reflect borders}
+    \PY{n}{rotation\PYZus{}range} \PY{o}{=} \PY{l+m+mi}{45}\PY{p}{,}                  \PY{c+c1}{\PYZsh{} Rotate images 45 degrees}
+    \PY{n}{shear\PYZus{}range} \PY{o}{=} \PY{l+m+mf}{0.2}\PY{p}{,}                     \PY{c+c1}{\PYZsh{} Deformate images in axis}
+    \PY{n}{validation\PYZus{}split} \PY{o}{=} \PY{l+m+mf}{0.1}\PY{p}{)}
+  \PY{k}{return} \PY{n}{datagen}  
+
+\PY{k}{def} \PY{n+nf}{data\PYZus{}augmentation\PYZus{}all}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+  \PY{n}{datagen} \PY{o}{=} \PY{n}{ImageDataGenerator}\PY{p}{(}
+   \PY{n}{featurewise\PYZus{}center}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}              \PY{c+c1}{\PYZsh{} set mean = 0}
+   \PY{n}{featurewise\PYZus{}std\PYZus{}normalization}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}   \PY{c+c1}{\PYZsh{} divide data by deviation            }
+   \PY{n}{horizontal\PYZus{}flip}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}                 \PY{c+c1}{\PYZsh{} randomly horizontal flip images}
+   \PY{n}{zoom\PYZus{}range} \PY{o}{=} \PY{l+m+mf}{0.2}\PY{p}{,}                     \PY{c+c1}{\PYZsh{} randomly zoom 0.2}
+   \PY{n}{fill\PYZus{}mode} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{reflect}\PY{l+s+s1}{\PYZsq{}} \PY{p}{,}               \PY{c+c1}{\PYZsh{} Reflect borders}
+   \PY{n}{rotation\PYZus{}range} \PY{o}{=} \PY{l+m+mi}{45}\PY{p}{,}                  \PY{c+c1}{\PYZsh{} Rotate images 45 degrees}
+   \PY{n}{shear\PYZus{}range} \PY{o}{=} \PY{l+m+mf}{0.2}\PY{p}{,}                    \PY{c+c1}{\PYZsh{} Deformate images in axis}
+   \PY{n}{validation\PYZus{}split} \PY{o}{=} \PY{l+m+mf}{0.1}\PY{p}{)}
+  \PY{k}{return} \PY{n}{datagen}  
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{el-modelo-basenet}{%
+\section{El modelo BaseNet}\label{el-modelo-basenet}}
+
+Lo primero que haremos es comentar qué \textbf{tipos de capas}
+utilizaremos durante la definción de los modelos:
+
+\begin{itemize}
+\item
+  Capas de \emph{Convolución (Conv2d)}. Estas realizarán convoluciones
+  sobre la entrada. En concreto, le daremos como parámetros un
+  \emph{kernel\_size}, y el número de filtros diferentes que harán estas
+  capas. La salida que ofrecerán dependerá del tamaño del \emph{kernel}
+  que le pasemos y del número de filtros que le indiquemos que aplique.
+\item
+  Capas de activación \emph{Relu}, que aplicarán a cada elemento \(x_i\)
+  (en nuestro caso, al principio serán píxeles) de la entrada \(X\) la
+  función \[
+  g(x_i) = max(0,x_i)
+  \] Estas nos aportarán la no-linealidad al modelo que entrenaremos.
+\item
+  Capas de \emph{Pooling}. En concreto, utilizaremos
+  \emph{MaxPooling}(aunque existen otras variantes como
+  \emph{MinPooling, AveragePooling}) casi siempre. Esta recibirá un
+  parámetro que será el tamaño que queremos para obtener subvectores de
+  nuestro vector (multi o unidimensional) de entrada, y tomará el máximo
+  de ese vector como salida por cada subvector.
+\item
+  Capas \emph{Flatten}, que harán que nuestra matriz pase a ser un
+  vector, añadiendo cada fila de la misma al final de la anterior,
+  empezando por la primera.
+\item
+  Capas \emph{Linear} (\emph{Dense} en \emph{Keras}), que aplicarán a la
+  entrada un producto por un vector que tendrá pesos que se mejorarán
+  durante el entrenamiento.
+\item
+  Activación \emph{Softmax}, que obtendrá un vector que tendrá tantas
+  entradas número de clases \(K\) tengamos para clasificar, y tendrá
+  como output en la posición \emph{i-}ésima la probabilidad de la imagen
+  de pertenecer a la clase \emph{i-}ésima. Utilizará como distribución
+  de probabilidad la exponencial, está definido de la siguiente forma:
+  \[ 
+  {\displaystyle \sigma (\mathbf {z} )_{i}={\frac {e^{z_{i}}}{\sum _{j=1}^{K}e^{z_{j}}}}{\text{ for }}i=1,\dotsc ,K{\text{ and }}\mathbf {z} =(z_{1},\dotsc ,z_{K})\in \mathbb {R} ^{K}}
+  \]
+\end{itemize}
+
+Comenzamos definiendo el modelo más sencillo pedido, \textbf{BaseNet}.
+
+\begin{table}[H]
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Layer No. & Layer Type   & \begin{tabular}[c]{@{}c@{}}Kernel size\\ conv layers\end{tabular} & \begin{tabular}[c]{@{}c@{}}Input | Output\\ dimension\end{tabular} & \begin{tabular}[c]{@{}c@{}}Input | Output\\ channels\\ conv layers\end{tabular} \\ \hline
+1         & Conv2D       & 5                                                                 & 32 | 28                                                            & 3 | 6                                                                           \\ \hline
+2         & Relu         & -                                                                 & 28 | 28                                                            & -                                                                               \\ \hline
+3         & MaxPooling2D & 2                                                                 & 28 | 14                                                            & -                                                                               \\ \hline
+4         & Conv2D       & 5                                                                 & 14 | 10                                                            & 6 | 16                                                                          \\ \hline
+5         & Relu         & -                                                                 & 10 | 10                                                            & -                                                                               \\ \hline
+6         & MaxPooling2D & 2                                                                 & 10 | 5                                                             & -                                                                               \\ \hline
+7         & Linear       & -                                                                 & 400 | 50                                                           & -                                                                               \\ \hline
+8         & Relu         & -                                                                 & 50 | 50                                                            & -                                                                               \\ \hline
+9         & Linear       & -                                                                 & 50 | 25                                                            & -                                                                               \\ \hline
+\end{tabular}
+\end{table}
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{0}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{BaseNet}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+  \PY{n}{model} \PY{o}{=} \PY{n}{Sequential}\PY{p}{(}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{}Layer 1 and 2}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Conv2D}\PY{p}{(}\PY{l+m+mi}{6}\PY{p}{,}\PY{n}{kernel\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{input\PYZus{}shape}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{32}\PY{p}{,}\PY{l+m+mi}{32}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{}Layer 3}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{MaxPooling2D}\PY{p}{(}\PY{n}{pool\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{}Layer 4 and 5}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Conv2D}\PY{p}{(}\PY{l+m+mi}{16}\PY{p}{,}\PY{n}{kernel\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{}Layer 6}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{MaxPooling2D}\PY{p}{(}\PY{n}{pool\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{}Flatten before FC}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Flatten}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{}Layer 7 and 8}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Dense}\PY{p}{(}\PY{l+m+mi}{50}\PY{p}{,} \PY{n}{activation} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{}Layer 9 and softmax}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Dense}\PY{p}{(}\PY{l+m+mi}{25}\PY{p}{,}\PY{n}{activation} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{softmax}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+
+  \PY{k}{return} \PY{n}{model}
+\end{Verbatim}
+\end{tcolorbox}
+
+  
+
+Entrenaremos este modelo sobre una parte del conjunto de datos
+\emph{Cifar100}, que contiene imágenes a color de tamaño
+\(32 \times 32\) con 100 clases. Sin embargo, nosotros tomaremos una
+parte de este conjunto de datos y reduciremos a 25 el número de clases,
+es por esto que la salida de la última capa \emph{Linear} tiene que ser
+de tamaño 25, para que podamos aplicarle una activación \emph{Softmax}.
+
+Ahora, vamos a implementar una función que haga el entrenamiento y
+muestre los resultados del mismo. Para ello, recibirá: 
+
+\begin{itemize}
+\item El
+\emph{modelo} de red convolucional que va a utilizar para entrenar
+\item El
+tipo de generador de datos que va a usar para el conjunto de
+entrenamiento, ya que hemos declarado dos funciones para que generen los
+datos de forma más completa o menos. No tendrá parámetro por defecto 
+\item El tipo de generador de datos que se utilizará para el conjunto de test.
+El parámetro más usado en este caso (se usará siempre salvo en la
+primera prueba del modelo) será \emph{normalize\_datagen\_test}, un
+objeto de la clase \emph{ImageDataGenerator} creado específicamente para
+este propósito. 
+\item Un parámetro \emph{data\_loader} que se encargará de
+llamar luego a la función que queramos para cargar los datos (nos
+servirá para usar esta misma función para la última parte de la
+práctica) 
+\item Un booleano \emph{early\_stopping}, inicializado por defecto
+a \emph{False}, que indicará si queremos hacer una parada anticipada en
+nuestro modelo. 
+\item El tamaño del \emph{batch}, que será por defecto
+\emph{32} 
+\item El número de \emph{épocas}, que por defecto será \emph{50}.
+
+\end{itemize}
+
+Para compilar el modelo se nos pide un optimizador. Existen varios
+optimizadores conocidos, pero utilizaremos en principio el
+\textbf{Gradiente Descendiente Estocástico} (SGD).
+
+Esta función devolverá el \emph{histograma} obtenido de cara a poder
+hacer comparaciones futuras con otros modelos. El código es el
+siguiente:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{0}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{train\PYZus{}and\PYZus{}show}\PY{p}{(}\PY{n}{model}\PY{p}{,}\PY{n}{train\PYZus{}data\PYZus{}gen}\PY{p}{,}\PY{n}{test\PYZus{}data\PYZus{}gen} \PY{o}{=} \PY{n}{normalize\PYZus{}datagen\PYZus{}test}\PY{p}{,} \PY{n}{data\PYZus{}loader} \PY{o}{=} \PY{n}{loadImgs}\PY{p}{,}\PY{n}{early\PYZus{}stopping} \PY{o}{=} \PY{k+kc}{False}\PY{p}{,}\PY{n}{batch\PYZus{}size} \PY{o}{=} \PY{l+m+mi}{32}\PY{p}{,}\PY{n}{epochs} \PY{o}{=} \PY{l+m+mi}{50}\PY{p}{)}\PY{p}{:}
+  \PY{c+c1}{\PYZsh{} Declare optimizer : SGD}
+  \PY{n}{opt} \PY{o}{=} \PY{n}{SGD}\PY{p}{(}\PY{n}{lr} \PY{o}{=} \PY{l+m+mf}{0.01}\PY{p}{,}\PY{n}{decay} \PY{o}{=} \PY{l+m+mf}{1e\PYZhy{}6}\PY{p}{,}\PY{n}{momentum} \PY{o}{=} \PY{l+m+mf}{0.9}\PY{p}{,}\PY{n}{nesterov} \PY{o}{=} \PY{k+kc}{True}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{}Compile model:}
+  \PY{n}{model}\PY{o}{.}\PY{n}{compile}\PY{p}{(}
+        \PY{n}{loss} \PY{o}{=} \PY{n}{keras}\PY{o}{.}\PY{n}{losses}\PY{o}{.}\PY{n}{categorical\PYZus{}crossentropy}\PY{p}{,}
+        \PY{n}{optimizer} \PY{o}{=} \PY{n}{opt}\PY{p}{,}  
+        \PY{n}{metrics} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{accuracy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Images}
+  \PY{n}{x\PYZus{}train} \PY{p}{,} \PY{n}{y\PYZus{}train} \PY{p}{,} \PY{n}{x\PYZus{}test} \PY{p}{,} \PY{n}{y\PYZus{}test} \PY{o}{=} \PY{n}{data\PYZus{}loader}\PY{p}{(}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Data generation object for train and test}
+  \PY{n}{datagen} \PY{o}{=} \PY{n}{train\PYZus{}data\PYZus{}gen}\PY{p}{(}\PY{p}{)}
+  \PY{n}{datagen\PYZus{}test} \PY{o}{=} \PY{n}{test\PYZus{}data\PYZus{}gen}\PY{p}{(}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Data fit, in case we used featurewise\PYZus{}center and/or featurewise\PYZus{}std\PYZus{}normalization  in the dataGen}
+  \PY{n}{datagen}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{x\PYZus{}train}\PY{p}{)}
+  \PY{n}{datagen\PYZus{}test}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{x\PYZus{}train}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Create train,test and validation sets}
+  \PY{n}{train} \PY{o}{=} \PY{n}{datagen}\PY{o}{.}\PY{n}{flow}\PY{p}{(}\PY{n}{x\PYZus{}train}\PY{p}{,}
+                     \PY{n}{y\PYZus{}train}\PY{p}{,}
+                     \PY{n}{batch\PYZus{}size} \PY{o}{=} \PY{n}{batch\PYZus{}size}\PY{p}{,} 
+                     \PY{n}{subset} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{training}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+  \PY{n}{validation} \PY{o}{=} \PY{n}{datagen}\PY{o}{.}\PY{n}{flow}\PY{p}{(}\PY{n}{x\PYZus{}train}\PY{p}{,}
+                          \PY{n}{y\PYZus{}train}\PY{p}{,}
+                          \PY{n}{batch\PYZus{}size} \PY{o}{=} \PY{n}{batch\PYZus{}size}\PY{p}{,}
+                          \PY{n}{subset} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{validation}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+  \PY{n}{test} \PY{o}{=} \PY{n}{datagen\PYZus{}test}\PY{o}{.}\PY{n}{flow}\PY{p}{(}\PY{n}{x\PYZus{}test}\PY{p}{,}
+                           \PY{n}{batch\PYZus{}size} \PY{o}{=} \PY{l+m+mi}{1}\PY{p}{,}
+                           \PY{n}{shuffle} \PY{o}{=} \PY{k+kc}{False}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Check early stopping}
+  \PY{n}{callbacks} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+  \PY{k}{if} \PY{n}{early\PYZus{}stopping}\PY{p}{:}
+    \PY{n}{callbacks}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{EarlyStopping}\PY{p}{(}\PY{n}{monitor}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{val\PYZus{}loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{patience}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{,}\PY{n}{restore\PYZus{}best\PYZus{}weights} \PY{o}{=} \PY{k+kc}{True}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Generate histogram, fitting generator}
+  \PY{n}{hist} \PY{o}{=} \PY{n}{model}\PY{o}{.}\PY{n}{fit\PYZus{}generator}\PY{p}{(}\PY{n}{generator} \PY{o}{=} \PY{n}{train}\PY{p}{,} 
+                            \PY{n}{steps\PYZus{}per\PYZus{}epoch} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{x\PYZus{}train}\PY{p}{)}\PY{o}{*}\PY{l+m+mf}{0.9}\PY{o}{/}\PY{n}{batch\PYZus{}size}\PY{p}{,}
+                            \PY{n}{epochs} \PY{o}{=} \PY{n}{epochs}\PY{p}{,} 
+                            \PY{n}{validation\PYZus{}data} \PY{o}{=} \PY{n}{validation}\PY{p}{,}
+                            \PY{n}{validation\PYZus{}steps} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{x\PYZus{}train}\PY{p}{)}\PY{o}{*}\PY{l+m+mf}{0.1}\PY{o}{/}\PY{n}{batch\PYZus{}size}\PY{p}{,}
+                            \PY{n}{verbose} \PY{o}{=} \PY{l+m+mi}{0}\PY{p}{,}
+                            \PY{n}{callbacks} \PY{o}{=} \PY{n}{callbacks}
+                            \PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Calculate predictoins}
+  \PY{n}{pred} \PY{o}{=} \PY{n}{model}\PY{o}{.}\PY{n}{predict\PYZus{}generator}\PY{p}{(}\PY{n}{test}\PY{p}{,}
+                                 \PY{n}{steps} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{test}\PY{p}{)}\PY{p}{)}
+  \PY{n}{score} \PY{o}{=} \PY{n}{calculateAccuracy}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,}\PY{n}{pred}\PY{p}{)}
+  \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{TEST SCORE =  }\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n+nb}{str}\PY{p}{(}\PY{n}{score}\PY{p}{)}\PY{p}{)}
+  \PY{k}{return} \PY{n}{hist}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Pasamos a probar un entrenamiento de \textbf{BaseNet}. En este primer
+caso, el objeto de la clase \emph{ImageDataGenerator} que necesitamos,
+se creará únicamente con un parámetro: - \emph{validation\_split = 0.1},
+que nos indica que el tamaño de la partición de validación será del
+\(10\%\)
+
+Se utilizará este \emph{datagen} tanto para el conjunto de \emph{train}
+como para el conjunto de \emph{test}.
+
+Vemos la ejecución del entrenamiento y los resultados:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{26}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{model1} \PY{o}{=} \PY{n}{BaseNet}\PY{p}{(}\PY{p}{)}
+\PY{n}{hist} \PY{o}{=} \PY{n}{train\PYZus{}and\PYZus{}show}\PY{p}{(}\PY{n}{model1}\PY{p}{,}\PY{n}{simple\PYZus{}datagen}\PY{p}{,}\PY{n}{simple\PYZus{}datagen}\PY{p}{,}\PY{n}{batch\PYZus{}size} \PY{o}{=} \PY{l+m+mi}{32}\PY{p}{,}\PY{n}{epochs} \PY{o}{=} \PY{l+m+mi}{30}\PY{p}{)}
+\PY{n}{showEvolution}\PY{p}{(}\PY{n}{hist}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+TEST SCORE =  0.394
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{output_13_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{output_13_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Como podemos ver a partir de unas 10 épocas el valor de la función de
+pérdida comienza a subir, mientras que el valor de acierto del modelo se
+ha establecido en el intervalo \((0.37,0.4)\) desde aproximadamente unas
+7 épocas, según la ejecución. Esto nos está indicando que el modelo ha
+aprendido lo suficiente y, como vemos, comienza a hacer
+\emph{overfitting} en los datos, pues hay una gran diferencia entre el
+acierto en el conjunto de train y en el conjunto de validación cuando
+hay un aumento de épocas.
+
+Recordemos que en cada ejecución los resultados pueden variar, pues los
+valores de los pesos se inicializan aleatoriamente cada vez.
+
+\hypertarget{mejora-del-modelo}{%
+\section{Mejora del modelo}\label{mejora-del-modelo}}
+
+Una vez que hemos implementado este modelo, vamos a pasar a realizar las
+mejoras sobre este. Se proponen una serie de mejoras que iremos tratando
+una por una y estudiando cómo varía el modelo. Comenzamos
+
+\hypertarget{normalizaciuxf3n-de-los-datos}{%
+\subsection{Normalización de los
+datos}\label{normalizaciuxf3n-de-los-datos}}
+
+Para la primera mejora, vamos a normalizar los datos para que tengan
+\(\mu = 0\) y \(\sigma^2 = 1\). Para ello tenemos la función que
+habíamos declarado anteriormente \textbf{\emph{normalize\_datagen}}, que
+el objeto de la clase \emph{ImageDataGenerator} genere los datos como
+nos interesa. En concreto, tendrá dos nuevos parámetros, que serán: -
+\emph{featurewise\_center=True}, que nos hará que los datos tengan
+\(\mu = 0\) - \emph{featurewise\_std\_normalization=True} que hará que
+los datos tengan \(\sigma^2 = 1\).
+
+Con esto, solo tenemos que crear un nuevo modelo \emph{BaseNet}, pero
+llamando esta vez en la función de ejecución a a la función ya
+mencionada. Veamos el resultado:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{59}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{model2} \PY{o}{=} \PY{n}{BaseNet}\PY{p}{(}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}model2.summary()}
+\PY{n}{hist2} \PY{o}{=} \PY{n}{train\PYZus{}and\PYZus{}show}\PY{p}{(}\PY{n}{model2}\PY{p}{,}\PY{n}{normalize\PYZus{}datagen}\PY{p}{,}\PY{n}{batch\PYZus{}size} \PY{o}{=} \PY{l+m+mi}{32}\PY{p}{,} \PY{n}{epochs} \PY{o}{=} \PY{l+m+mi}{30}\PY{p}{)}
+\PY{n}{showEvolution}\PY{p}{(}\PY{n}{hist2}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+TEST SCORE =  0.3788
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{output_15_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{output_15_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Podemos observar que, en caso de que haya mejora (debemos recordad que
+en este proceso influye la aleatoriedad, pues los pesos iniciales son
+aleatorios), la mejora que se obtiene es muy leve en el porcentaje de
+acierto del modelo cuando se ha utilizado este nuevo \emph{datagen} que
+normaliza los datos.
+
+Sin embargo, en modelos sucesivos, vamos a seguir utilizando la
+normalización del conjunto de datos pues es posible que al añadir más
+capas a nuestro modelo pueda sernos de utilidad para estas capas.
+
+\hypertarget{aumento-de-los-datos}{%
+\subsection{Aumento de los datos}\label{aumento-de-los-datos}}
+
+Una buena técnica para mejorar el entrenamiento de nuestra red es
+realizar \textbf{data augmentation}. Este consiste en modificar de
+diversas maneras las imágenes que tenemos de entrenamiento de forma que
+puedan obtener diferentes características y puedan aportar por ello más
+información a nuestro modelo. Algunas de las acciones más interesantes
+que podemos hacer para realizar este aumento de datos son: -
+\emph{Vertical/Horizontal Flip}, que volteará una imagen en el sentido
+que le podamos indicar - \emph{Zoom}, que hará zoom sobre una imagen
+según un rango que le indiquemos - \emph{Rotation}, que hará una
+rotación de nuestra imagen en el sentido indicado.
+
+Hay que mencionar que este aumento de datos no se realiza siempre, sino
+que existe una probabilidad de que se le aplique a una imagen de forma
+aleatoria, de forma que no se realizará el aumento de datos que podamos
+indicar a todas las imágenes que tengamos para el entrenamiento.
+
+Ahora, vamos a realizar el mismo procedimiento que en el caso anterior,
+pero vamos a añadir que el generador de datos haga además un
+\textbf{data\_augmentation}. Comenzamos por uno sencillo. Para ello,
+además de los parámetros anteriores (que también estarán en nuestro
+objeto \emph{datagen}, de cara a hacer comparativas entre los resultados
+obtenidos), se creará el objeto con los siguientes parámetros: -
+\emph{horizontal\_flip = True}, que hará que algunas imágenes hagan
+\emph{flip} aleatoriamente - \emph{zoom\_range = 0.2}, que hará que se
+haga zoom aleatoriamente sobre algunas de las imágenes.
+
+Veamos ahora los resultados de la ejecución.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{28}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{model3} \PY{o}{=} \PY{n}{BaseNet}\PY{p}{(}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}model3.summary()}
+\PY{n}{hist3} \PY{o}{=} \PY{n}{train\PYZus{}and\PYZus{}show}\PY{p}{(}\PY{n}{model3}\PY{p}{,}\PY{n}{data\PYZus{}augmentation\PYZus{}datagen}\PY{p}{,}\PY{n}{batch\PYZus{}size} \PY{o}{=} \PY{l+m+mi}{32}\PY{p}{,}\PY{n}{epochs} \PY{o}{=} \PY{l+m+mi}{25}\PY{p}{)}
+\PY{n}{showEvolution}\PY{p}{(}\PY{n}{hist3}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+TEST SCORE =  0.4528
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{output_17_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{output_17_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Volvemos a obtener en este caso una mejora de \(0.02\), lo cual es
+bastante significativo , pues obtener una mejora del \(0.01\) por ciento
+sabemos que ya es complicado.
+
+Sobre todo ,podemos observar en los histogramas que la precisión de
+acierto asciende más y se hace más cercana al \emph{Training Accuracy}
+que en los casos anteriores, que es lo que nos interesa a la hora de
+clasificar. Este es un buen criterio para afirmar que el modelo es
+\textbf{mejor} cuando se normalizan los datos.
+
+Ahora, sería interesante probar otros tipos de
+\emph{data\_augmentation}. Como se ha podido comprobar al principio en
+las funciones, temnemos otra llamada \emph{data\_augmentation\_datagen2}
+que hará otro aumento de los datos diferente. En concreto, los
+parámetros que tiene adicionales a la normalización son:
+
+\begin{itemize} 
+\item \emph{fill\_mode = `reflect'}, que se encarga de hacer que al aplicar
+los filtros, el borde que se utilice sea \emph{BORDER\_REFLECT}
+\item \emph{rotation\_range = 45}, que hará que las imágenes puedan rotar un
+ángulo de 45 grados. 
+\item  \emph{shear\_range = 0.2}, que hará que se puedan
+hacer ciertos cortes en la imagen.
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{29}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{model\PYZus{}augmentation2} \PY{o}{=} \PY{n}{BaseNet}\PY{p}{(}\PY{p}{)}
+\PY{n}{hist\PYZus{}augmentation2} \PY{o}{=} \PY{n}{train\PYZus{}and\PYZus{}show}\PY{p}{(}\PY{n}{model\PYZus{}augmentation2}\PY{p}{,}\PY{n}{data\PYZus{}augmentation\PYZus{}datagen2}\PY{p}{,}\PY{n}{batch\PYZus{}size} \PY{o}{=} \PY{l+m+mi}{32}\PY{p}{,}\PY{n}{epochs} \PY{o}{=} \PY{l+m+mi}{25}\PY{p}{)}
+\PY{n}{showEvolution}\PY{p}{(}\PY{n}{hist\PYZus{}augmentation2}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+TEST SCORE =  0.4068
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{output_19_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{output_19_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Parece que estas gráficas se ajustan algo más a las del conjunto de training, aunque el resultado final de acierto en el conjunto de test sea menor. Sin embargo, también vemos que a partir de la época 20, la función de pérdida comienza a aumentar, al contrario de en el caso anterior.
+
+Ahora, vamos a hacer una prueba utilizando todos los parámetros que
+hemos usado anteriormente , pero a la vez. Veamos si tener una gran
+cantidad de formas de hacer \emph{data\_augmentation} nos proporciona un
+mejor resultado. Utilizamos la función \emph{data\_augmentation\_all}
+que hemos definido.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{36}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{model\PYZus{}augmentation\PYZus{}all} \PY{o}{=} \PY{n}{BaseNet}\PY{p}{(}\PY{p}{)}
+\PY{n}{hist\PYZus{}augmentation\PYZus{}all} \PY{o}{=} \PY{n}{train\PYZus{}and\PYZus{}show}\PY{p}{(}\PY{n}{model\PYZus{}augmentation\PYZus{}all}\PY{p}{,}\PY{n}{train\PYZus{}data\PYZus{}gen} \PY{o}{=} \PY{n}{data\PYZus{}augmentation\PYZus{}all}\PY{p}{,}\PY{n}{batch\PYZus{}size} \PY{o}{=} \PY{l+m+mi}{32}\PY{p}{,}\PY{n}{epochs} \PY{o}{=} \PY{l+m+mi}{25}\PY{p}{)}
+\PY{n}{showEvolution}\PY{p}{(}\PY{n}{hist\PYZus{}augmentation\PYZus{}all}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+TEST SCORE =  0.386
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{output_21_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{output_21_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    El resultado es peor que los anteriores. Vemos que las gráficas de validación se ajustan a las gráficas de entrenamiento, pero aun así, las gráficas de entrenamiento están obteniendo valores por debajo de los que hemos conseguido anteriormente, por  lo que parece que necesitaría más tiempo en épocas para entrenar los pesos.
+
+Vamos ahora a hacer la comparación entre los 3, para ver qué hemos
+obtenido:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{37}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{compareHists}\PY{p}{(}\PY{p}{[}\PY{n}{hist3}\PY{p}{,}\PY{n}{hist\PYZus{}augmentation2}\PY{p}{,}\PY{n}{hist\PYZus{}augmentation\PYZus{}all}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Flip and zoom}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Fill, rotation and shear}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{All data augmentation}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.7\linewidth}{0.9\paperheight}}{output_23_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.7\linewidth}{0.9\paperheight}}{output_23_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Podemos ver que, al comparar los 3, obtenemos que el mejor
+\emph{accuracy} en la validación lo obtenemos en el modelo de datos que
+hace solamente \emph{Flip} y \emph{Zoom} de las imágenes. Por debajo
+queda el que hace \emph{Fill} y \emph{Rotation}, y el último queda el
+que hace todas a la vez. Esto podría deberse a que hacer tantas
+modificaciones sobre las imágenes ralentice el aprendizaje del modelo
+pues le será más difícil reconocer características si las puede
+encontrar de diversas maneras.
+
+Además, el modelo que usa más formas de \emph{data augmentation} tiene
+también la función de pérdida más alta durante todo el tiempo, siendo el
+que utiliza \emph{Flip and zoom} el que tiene la menor función de
+pérdida.
+
+Es por esto que, a partir de ahora, consideraremos el primer
+\emph{data\_augmentation} como el mejor de los generadores de imágenes y
+es el que utilizaremos de ahora en adelante.
+
+    \hypertarget{red-muxe1s-profunda}{%
+\subsection{Red más profunda}\label{red-muxe1s-profunda}}
+
+Vamos a tratar ahora de profundizar la red, añadiendo más capas a
+nuestro modelo inicial.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{0}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{deeper\PYZus{}basenet}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+  \PY{n}{model} \PY{o}{=} \PY{n}{Sequential}\PY{p}{(}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} First conv +  relu}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Conv2D}\PY{p}{(}\PY{l+m+mi}{6}\PY{p}{,}\PY{n}{kernel\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{input\PYZus{}shape}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{32}\PY{p}{,}\PY{l+m+mi}{32}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Reduce size}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{MaxPooling2D}\PY{p}{(}\PY{n}{pool\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Second Conv + relu}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Conv2D}\PY{p}{(}\PY{l+m+mi}{16}\PY{p}{,}\PY{n}{kernel\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Third conv, bigger output size + relu}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Conv2D}\PY{p}{(}\PY{l+m+mi}{32}\PY{p}{,}\PY{n}{kernel\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{,}\PY{n}{activation} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Reduce size}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{MaxPooling2D}\PY{p}{(}\PY{n}{pool\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} 4th conv, 3x3 this time}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Conv2D}\PY{p}{(}\PY{l+m+mi}{64}\PY{p}{,}\PY{n}{kernel\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,}\PY{n}{activation} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Flatten before FC}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Flatten}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} FC. add Relu output size = 100}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Dense}\PY{p}{(}\PY{l+m+mi}{100}\PY{p}{,} \PY{n}{activation} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} FC and relu, smaller output size = 50}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Dense}\PY{p}{(}\PY{l+m+mi}{50}\PY{p}{,}\PY{n}{activation} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} FC and softmax}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Dense}\PY{p}{(}\PY{l+m+mi}{25}\PY{p}{,}\PY{n}{activation} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{softmax}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+
+  \PY{k}{return} \PY{n}{model}
+  
+\end{Verbatim}
+\end{tcolorbox}
+
+    Una vez definida, vemos que hemos añadido las siguientes capas: 
+    
+    \begin{itemize}
+    \item \emph{Conv2D} después de las anteriores, pero con un \emph{outputSize}
+mayor. 
+\item \emph{Conv2D} antes de hacer \emph{Flatten}, pero con un tamaño
+de kérnel menor al de las anteriores 
+\item \emph{Dense}, una nueva capa FC
+pero con un tamaño de salida mayor
+\end{itemize}
+
+Con esto, tratamos de ver si añadiendo más capas de convolución con
+parámetros parecidos a los que ya teníamos anteriormente, obtenemos una
+mejora en los resultados.
+
+A partir de ahora, utilizaremos el objeto de \emph{ImageDataGenerator}
+que nos da mejores resultados hasta el momento, es decir, el que realiza
+\textbf{dataAugmentation}.
+
+Vamos ahora a ver los resultados. Ejecutamos dos veces, uno con 15
+épocas y otro con 40, para ver cómo varía según las épocas. Las dos
+primeras imágenes se corresponderán con las \(15\) épocas y las dos
+segundas con las \(40\) épocas.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{61}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{model4} \PY{o}{=} \PY{n}{deeper\PYZus{}basenet}\PY{p}{(}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}model4.summary()}
+\PY{n}{hist4} \PY{o}{=} \PY{n}{train\PYZus{}and\PYZus{}show}\PY{p}{(}\PY{n}{model4}\PY{p}{,}\PY{n}{data\PYZus{}augmentation\PYZus{}datagen}\PY{p}{,}\PY{n}{batch\PYZus{}size} \PY{o}{=} \PY{l+m+mi}{32}\PY{p}{,}\PY{n}{epochs} \PY{o}{=} \PY{l+m+mi}{15}\PY{p}{)}
+\PY{n}{showEvolution}\PY{p}{(}\PY{n}{hist4}\PY{p}{)}
+\PY{n}{hist5} \PY{o}{=} \PY{n}{train\PYZus{}and\PYZus{}show}\PY{p}{(}\PY{n}{model4}\PY{p}{,}\PY{n}{data\PYZus{}augmentation\PYZus{}datagen}\PY{p}{,}\PY{n}{batch\PYZus{}size} \PY{o}{=} \PY{l+m+mi}{32}\PY{p}{,} \PY{n}{epochs} \PY{o}{=} \PY{l+m+mi}{45}\PY{p}{)}
+
+\PY{n}{showEvolution}\PY{p}{(}\PY{n}{hist5}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+TEST SCORE =  0.4012
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.4\paperheight}}{output_28_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.4\paperheight}}{output_28_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+TEST SCORE =  0.4224
+Epochs = 40
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{output_28_4.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{output_28_5.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Podemos observar como hay un empeoramiento de los resultados respecto a
+nuestro mejor modelo (que conseguía \(0.45\) de acierto en \emph{test}),
+a pesar incluso de establecer un número de épocas bastante mayor. Esto
+nos indica que añadir más capas no tiene por qué mejorar los resultados.
+Tampoco aunque aumentemos el número de épocas esto tiene por qué
+mejorar.
+
+Además, podemos ver que estamos tratando de buscar casi el doble de
+parámetros que en los anteriores modelos.
+
+    \hypertarget{uso-de-kernels-muxe1s-pequeuxf1os}{%
+\subsubsection{Uso de Kernels más
+pequeños}\label{uso-de-kernels-muxe1s-pequeuxf1os}}
+
+Vamos a probar ahora a tomar tamaños de kernel siempre de \(3\times 3\),
+y veamos cómo afecta esto a los resultados. Llamaremos al nuevo modelo
+\textbf{small\_kernel\_basenet}, y será igual que el anterior salvo que:
+- Todas las \emph{Conv2D} tendrán \(kernel\_size = (3,3)\) - Quitaremos
+la capa FC que tenía como \emph{OutputSize = 50}.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{0}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{small\PYZus{}kernel\PYZus{}basenet}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+  \PY{n}{model} \PY{o}{=} \PY{n}{Sequential}\PY{p}{(}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} First conv +  relu}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Conv2D}\PY{p}{(}\PY{l+m+mi}{6}\PY{p}{,}\PY{n}{kernel\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{input\PYZus{}shape}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{32}\PY{p}{,}\PY{l+m+mi}{32}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Reduce size}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{MaxPooling2D}\PY{p}{(}\PY{n}{pool\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Second Conv + relu}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Conv2D}\PY{p}{(}\PY{l+m+mi}{16}\PY{p}{,}\PY{n}{kernel\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Third conv, bigger output size + relu}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Conv2D}\PY{p}{(}\PY{l+m+mi}{32}\PY{p}{,}\PY{n}{kernel\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,}\PY{n}{activation} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Reduce size}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{MaxPooling2D}\PY{p}{(}\PY{n}{pool\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} 4th conv, 3x3 this time}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Conv2D}\PY{p}{(}\PY{l+m+mi}{64}\PY{p}{,}\PY{n}{kernel\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,}\PY{n}{activation} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Flatten before FC}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Flatten}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} FC. add Relu output size = 100}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Dense}\PY{p}{(}\PY{l+m+mi}{100}\PY{p}{,} \PY{n}{activation} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} FC and softmax}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Dense}\PY{p}{(}\PY{l+m+mi}{25}\PY{p}{,}\PY{n}{activation} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{softmax}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+
+  \PY{k}{return} \PY{n}{model}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{41}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{model5} \PY{o}{=} \PY{n}{small\PYZus{}kernel\PYZus{}basenet}\PY{p}{(}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}model5.summary()}
+\PY{n}{hist6} \PY{o}{=} \PY{n}{train\PYZus{}and\PYZus{}show}\PY{p}{(}\PY{n}{model5}\PY{p}{,}\PY{n}{data\PYZus{}augmentation\PYZus{}datagen}\PY{p}{,}\PY{n}{batch\PYZus{}size} \PY{o}{=} \PY{l+m+mi}{32}\PY{p}{,}\PY{n}{epochs} \PY{o}{=} \PY{l+m+mi}{30}\PY{p}{)}
+\PY{n}{showEvolution}\PY{p}{(}\PY{n}{hist6}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+TEST SCORE =  0.478
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{output_32_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{output_32_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    En este caso, se consigue una pequeña mejora, vemos como ambas gráficas
+se acercan más a las gráficas de \emph{entrenamiento}, lo cual quiere
+decir que los pesos que está obteniendo nuestra red neuronal en el
+entrenamiento son suficientemente buenos como para obtener un acierto
+parecido en el entrenamiento y en la validación después.
+
+Esto quiere decir que nuestro modelo está entrenando lo suficiente (pues
+vemos que el acierto en validación llega a un punto en el que no
+asciende con notoriedad, lo cual nos indica que hemos aprendido más o
+menos lo que podíamos en general), y que , como nos estamos acercando
+con el acierto en validación al acierto en \emph{train}, estamos
+aprendiendo buenas características que nos ayudan a obtener el mayor
+porcentaje de acierto posible en este caso.
+
+\hypertarget{batch-normalization}{%
+\subsection{Batch Normalization}\label{batch-normalization}}
+
+\textbf{Batch Normalization} es una técnica para mejorar el
+funcionamiento, velocidad y estabilidad de nuestra red neuronal
+convolucional. Consiste en normalizar según \emph{batches}, es decir,
+tomar un \emph{batch} de imágenes que se tomará del tamaño
+\emph{batch\_size} que hayamos utilizado, y hacer una normalización
+usando solo esas imágenes.
+
+Vamos a tratar de añadir a nuestro modelo algunas capas de
+\emph{BatchNormalization} para reducir el \emph{overfitting} de nuestro
+modelo. Lo haremos sobre el último modelo que hemos utilizado, que es el que
+parece que nos ha dado los mejores resultados aunque tenga un número de
+parámetros a entrenar bastante mayor que el resto de modelos.
+
+Vamos a añadir estas capas de \emph{BatchNormalization} antes y después
+de las capas convolucionales, y compararemos los resultados obtenidos.
+
+\hypertarget{antes-de-relu}{%
+\subsubsection{\texorpdfstring{Antes de
+\emph{relu}}{Antes de relu}}\label{antes-de-relu}}
+
+Vamos a definir primero un modelo en el que el \emph{Batch
+Normalization} se hará después de las activaciones \emph{relu}:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{0}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{bn\PYZus{}after\PYZus{}relu\PYZus{}basenet}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+  \PY{n}{model} \PY{o}{=} \PY{n}{Sequential}\PY{p}{(}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} First conv +  relu}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Conv2D}\PY{p}{(}\PY{l+m+mi}{6}\PY{p}{,}\PY{n}{kernel\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{input\PYZus{}shape}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{32}\PY{p}{,}\PY{l+m+mi}{32}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Batch Normalization}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{BatchNormalization}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Reduce size}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{MaxPooling2D}\PY{p}{(}\PY{n}{pool\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Second Conv + relu}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Conv2D}\PY{p}{(}\PY{l+m+mi}{16}\PY{p}{,}\PY{n}{kernel\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Another Batch Normalization}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{BatchNormalization}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Third conv, bigger output size + relu}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Conv2D}\PY{p}{(}\PY{l+m+mi}{32}\PY{p}{,}\PY{n}{kernel\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,}\PY{n}{activation} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Reduce size}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{MaxPooling2D}\PY{p}{(}\PY{n}{pool\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} 4th conv, 3x3 this time}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Conv2D}\PY{p}{(}\PY{l+m+mi}{64}\PY{p}{,}\PY{n}{kernel\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,}\PY{n}{activation} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Flatten before FC}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Flatten}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} FC. add Relu output size = 100}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Dense}\PY{p}{(}\PY{l+m+mi}{100}\PY{p}{,} \PY{n}{activation} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} FC and softmax}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Dense}\PY{p}{(}\PY{l+m+mi}{25}\PY{p}{,}\PY{n}{activation} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{softmax}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+
+  \PY{k}{return} \PY{n}{model}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{44}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{model6} \PY{o}{=} \PY{n}{bn\PYZus{}after\PYZus{}relu\PYZus{}basenet}\PY{p}{(}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}model6.summary()}
+\PY{n}{hist7} \PY{o}{=} \PY{n}{train\PYZus{}and\PYZus{}show}\PY{p}{(}\PY{n}{model6}\PY{p}{,}\PY{n}{data\PYZus{}augmentation\PYZus{}datagen}\PY{p}{,}\PY{n}{batch\PYZus{}size} \PY{o}{=} \PY{l+m+mi}{32}\PY{p}{,}\PY{n}{epochs} \PY{o}{=} \PY{l+m+mi}{30}\PY{p}{)}
+\PY{n}{showEvolution}\PY{p}{(}\PY{n}{hist7}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+TEST SCORE =  0.5064
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{output_35_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{output_35_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    El cambio es bastante significativo. Podemos ver en la gráfica que en
+estas 30 épocas, la función de \emph{score} no para de aumentar ni si
+quiera en el conjunto de entrenamiento. Se obtiene una clasificación que
+es mejor en más 10 puntos porcentuales con respecto al modelo inicial,
+lo cual es un cambio sigficativo, llegando casi a quedarse en \(0.5\) de
+aciertos en el conjunto de test.
+
+Podemos también apreciar que nos aparecen \emph{44 non trainable
+parameters} (parámetros no entrenables), esto nos indica que tenemos
+parámetros que no se pueden optimizar con los datos que tenemos. Estos
+probablemente hayan aparecido de haber introducido capas como
+\emph{Batch Normalization} o \emph{Relu}, que son capas que no se
+entrenan.
+
+Este es hasta ahora el mejor modelo obtenido , gracias a su buen
+\emph{test\_score} y a que su proximidad de las gráficas de validación y
+las de train es mayor que en el resto de casos.
+
+\hypertarget{despuuxe9s-de-relu}{%
+\subsubsection{Después de Relu}\label{despuuxe9s-de-relu}}
+
+Ahora, vamos a ver cómo se comporta el modelo si hacemos esta
+\emph{Batch Normalization} después de hacer la activación \emph{relu}. A
+priori, el resultado podría variar, pues al hacer normalizaciones en los
+batch, podría haber alguna modificación en los valores negativos de este
+y cambiar algunos valores obtenidos en la aplicación de \emph{relu}.
+
+Definamos el modelo que tenga ahora las activaciones \emph{relu} después
+de las normalizaciones en Batch:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{0}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{bn\PYZus{}before\PYZus{}relu\PYZus{}basenet}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+  \PY{n}{model} \PY{o}{=} \PY{n}{Sequential}\PY{p}{(}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} First conv +  relu}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Conv2D}\PY{p}{(}\PY{l+m+mi}{6}\PY{p}{,}\PY{n}{kernel\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,}\PY{n}{input\PYZus{}shape}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{32}\PY{p}{,}\PY{l+m+mi}{32}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Batch Normalization}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{BatchNormalization}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Now ReLu}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Activation}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Reduce size}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{MaxPooling2D}\PY{p}{(}\PY{n}{pool\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Second Conv + relu}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Conv2D}\PY{p}{(}\PY{l+m+mi}{16}\PY{p}{,}\PY{n}{kernel\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Another Batch Normalization}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{BatchNormalization}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{}Relu after Batch}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Activation}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Third conv, bigger output size + relu}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Conv2D}\PY{p}{(}\PY{l+m+mi}{32}\PY{p}{,}\PY{n}{kernel\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,}\PY{n}{activation} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Reduce size}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{MaxPooling2D}\PY{p}{(}\PY{n}{pool\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} 4th conv, 3x3 this time}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Conv2D}\PY{p}{(}\PY{l+m+mi}{64}\PY{p}{,}\PY{n}{kernel\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,}\PY{n}{activation} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Flatten before FC}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Flatten}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} FC. add Relu output size = 100}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Dense}\PY{p}{(}\PY{l+m+mi}{100}\PY{p}{,} \PY{n}{activation} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} FC and softmax}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Dense}\PY{p}{(}\PY{l+m+mi}{25}\PY{p}{,}\PY{n}{activation} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{softmax}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+
+  \PY{k}{return} \PY{n}{model}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{46}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{model7} \PY{o}{=} \PY{n}{bn\PYZus{}before\PYZus{}relu\PYZus{}basenet}\PY{p}{(}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}model7.summary()}
+\PY{n}{hist8} \PY{o}{=} \PY{n}{train\PYZus{}and\PYZus{}show}\PY{p}{(}\PY{n}{model7}\PY{p}{,}\PY{n}{data\PYZus{}augmentation\PYZus{}datagen}\PY{p}{,}\PY{n}{batch\PYZus{}size} \PY{o}{=} \PY{l+m+mi}{32}\PY{p}{,}\PY{n}{epochs} \PY{o}{=} \PY{l+m+mi}{30}\PY{p}{)}
+\PY{n}{showEvolution}\PY{p}{(}\PY{n}{hist8}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+TEST SCORE =  0.5056
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{output_38_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{output_38_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Vamos a comparar ambas gráficas y ver qué resultados podemos obtener:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{47}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{compareHists}\PY{p}{(}\PY{p}{[}\PY{n}{hist7}\PY{p}{,}\PY{n}{hist8}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{BatchNormalization after relu}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Batch normalization before relu}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{output_40_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{output_40_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Podemos observar como el resultado que se obtiene al evaluar en el
+conjunto de test no difiere mucho en ambos modelos. Sin embargo, si
+estudiamos las gráficas, vemos que:
+\begin{itemize} 
+\item La función de pérdida es
+prácticamente siempre inferior cuando \emph{Batch Normalization} se
+realiza \textbf{después} de \emph{relu}. 
+\item  El acierto es siempre mayor
+en los conjuntos de validación durante el entrenamiento cuando
+\emph{Batch Normalization} se realiza \textbf{después} de \emph{relu}.
+\end{itemize}
+
+A pesar de no haber mucha diferencia, hemos obtenido que si hacemos la
+normalización \textbf{después} de hacer la activación \emph{relu}, tanto
+la función de pérdida es un poco menor que haciéndo la normalización
+antes, como el acierto es algo mayor, así que podríamos decir que
+obtenemos mejores resultados si hacemos \emph{Batch Normalization}
+\textbf{después} de hacer \emph{relu}. Es por ello que a partir de ahora
+tomaremos en los sucesivos modelos como base el modelo
+\emph{bn\_after\_relu\_basenet}
+
+\hypertarget{batch-normalization-en-capas-fc}{%
+\subsubsection{Batch Normalization en capas
+FC}\label{batch-normalization-en-capas-fc}}
+
+Vamos a hacer ahora una nueva prueba, trataremos de hacer \emph{Batch
+Normalization} , además de después de algunas \emph{relu}, después de
+alguna capa \emph{Dense} y veamos si esto mejora sustancialmente o
+empeora los resultados.
+
+Definamos primero el modelo,partiendo del modelo que ya hemos
+mencionado.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{0}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{bn\PYZus{}fc\PYZus{}basenet}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+  \PY{n}{model} \PY{o}{=} \PY{n}{Sequential}\PY{p}{(}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} First conv +  relu}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Conv2D}\PY{p}{(}\PY{l+m+mi}{6}\PY{p}{,}\PY{n}{kernel\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{input\PYZus{}shape}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{32}\PY{p}{,}\PY{l+m+mi}{32}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Batch Normalization}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{BatchNormalization}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Reduce size}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{MaxPooling2D}\PY{p}{(}\PY{n}{pool\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Second Conv + relu}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Conv2D}\PY{p}{(}\PY{l+m+mi}{16}\PY{p}{,}\PY{n}{kernel\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Another Batch Normalization}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{BatchNormalization}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Third conv, bigger output size + relu}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Conv2D}\PY{p}{(}\PY{l+m+mi}{32}\PY{p}{,}\PY{n}{kernel\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,}\PY{n}{activation} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Reduce size}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{MaxPooling2D}\PY{p}{(}\PY{n}{pool\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} 4th conv, 3x3 this time}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Conv2D}\PY{p}{(}\PY{l+m+mi}{64}\PY{p}{,}\PY{n}{kernel\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,}\PY{n}{activation} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Flatten before FC}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Flatten}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} FC. add Relu output size = 100}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Dense}\PY{p}{(}\PY{l+m+mi}{100}\PY{p}{,} \PY{n}{activation} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Batch normalization in FC}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{BatchNormalization}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} FC and softmax}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Dense}\PY{p}{(}\PY{l+m+mi}{25}\PY{p}{,}\PY{n}{activation} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{softmax}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+
+  \PY{k}{return} \PY{n}{model}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Ahora, entrenamos este modelo y lo comparamos directamente con el
+resultado del mismo modelo pero sin añadir la normalización en la capa
+FC.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{49}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{model8} \PY{o}{=} \PY{n}{bn\PYZus{}fc\PYZus{}basenet}\PY{p}{(}\PY{p}{)}
+\PY{n}{hist9} \PY{o}{=} \PY{n}{train\PYZus{}and\PYZus{}show}\PY{p}{(}\PY{n}{model8}\PY{p}{,}\PY{n}{data\PYZus{}augmentation\PYZus{}datagen}\PY{p}{,}\PY{n}{batch\PYZus{}size} \PY{o}{=} \PY{l+m+mi}{32}\PY{p}{,}\PY{n}{epochs} \PY{o}{=} \PY{l+m+mi}{30}\PY{p}{)}
+\PY{n}{showEvolution}\PY{p}{(}\PY{n}{hist9}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+TEST SCORE =  0.52
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{output_44_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{output_44_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Los comparamos en la misma gráfica
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{50}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{compareHists}\PY{p}{(}\PY{p}{[}\PY{n}{hist7}\PY{p}{,}\PY{n}{hist9}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Batch Normalization not in FC}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Batch Normalization in FC}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{output_46_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{output_46_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Los resultados nos muestran lo siguiente:
+
+\begin{itemize}
+\tightlist
+\item
+  Aunque en el comienzo sea mayor, la función de pérdida es generalmente
+  \textbf{menor} cuando tenemos \emph{Batch Normalization} en las capas
+  FC que cuando no la tenemos.
+\item
+  \emph{Batch Normalization} en las capas FC nos proporciona un mayor
+  acierto en el conjunto de validación
+\item
+  El \emph{test score} final es muy parecido entre ambas. En la última
+  ejecución hecha, el mayor ha sido en la que tiene \emph{BN} en la capa
+  \emph{FC}, por lo que de ahora en adelante usaremos este modelo como
+  base.
+\end{itemize}
+
+Con estos resultados, podemos enunciar que hacer \emph{Batch
+Normalization} en las últimas capas nos está ayudando a obtener un
+entrenamiento más general que no utilizarlo en este tipo de capas, por
+lo cual, utilizarlo en ellas supone una \textbf{mejora} respecto a
+nuestro modelo.
+
+\hypertarget{early-stopping}{%
+\subsection{Early Stopping}\label{early-stopping}}
+
+Una buena opción en nuestro entrenamiento puede ser hacer una parada del
+entrenamiento si el modelo no consigue mejorar tras pasar un número de
+épocas que nos interese, para que no se alargue en tiempo de ejecución
+innecesariamente. Esto es justamente el \emph{early stopping}.
+
+Vamos a utilizar ahora el parámetro que hemos definido en nuestra
+función de entrenamiento. \emph{Early Stopping} nos ayudará a que el
+entrenamiento termine de forma anticipada y evitará así el posible
+\emph{overfitting}. Además, al terminar de forma anticipada el
+entrenamiento, habremos conseguido más rapidez en el mismo.
+
+Comentar primero que un \textbf{callback} es , según la documentación de
+\emph{Keras}, un conjunto de funciones que se aplican en ciertos
+momentos del proceso de entrenamiento. Una de las funciones que se le
+puede aplicar es \emph{Early Stopping}.
+
+Si le indicamos a nuestra función que queremos \emph{Early Stopping}, se
+le indicará a \emph{fit\_generator} que el conjunto de \emph{callbacks}
+esté formado por la función \emph{EarlyStopping}. Esta función tiene
+varios parámetros, pero los que tendremos en cuenta serán:
+\begin{itemize} \item
+\emph{monitor}, que es el parámetro que queremos ver si está cambiando
+durante las épocas 
+
+\item \emph{patience}, que es el número de épocas que
+queremos esperar sin que se modifique para parar el entrenamiento
+\end{itemize}
+En nuestro caso, creo que esto no será muy relevante pues el número de
+épocas que estamos usando en el entrenamiento es muy pequeño (recordemos
+que es solamente 30). Así que, para que pudiera tener algo de impacto en
+el entrenamiento, vamos a establecer que nuestro algoritmo tenga ``poca
+paciencia'', y haga \emph{EarlyStopping} si no mejora en \textbf{3}
+épocas.
+
+Vamos a ver cómo actúa el mejor modelo obtenido hasta ahora si activamos
+\emph{Early Stopping}.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{58}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{model8} \PY{o}{=} \PY{n}{bn\PYZus{}fc\PYZus{}basenet}\PY{p}{(}\PY{p}{)}
+\PY{n}{hist9} \PY{o}{=} \PY{n}{train\PYZus{}and\PYZus{}show}\PY{p}{(}\PY{n}{model8}\PY{p}{,}\PY{n}{data\PYZus{}augmentation\PYZus{}datagen}\PY{p}{,}\PY{n}{early\PYZus{}stopping}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}\PY{n}{batch\PYZus{}size} \PY{o}{=} \PY{l+m+mi}{32}\PY{p}{,}\PY{n}{epochs} \PY{o}{=} \PY{l+m+mi}{30}\PY{p}{)}
+\PY{n}{showEvolution}\PY{p}{(}\PY{n}{hist9}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+TEST SCORE =  0.5244
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{output_48_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{output_48_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Vemos como hemos obtenido un \emph{early stopping} a las 10 épocas,
+porque no hemos conseguido entre la época 9 y 10 que la función de
+pérdida disminuya en el conjunto de validación, como queríamos ver. A
+costa de esto, hemos obtenido una pequeña pérdida en el \emph{test
+score} final, descendiendo en dos puntos porcentuales.
+
+Es posible que el número de épocas de \emph{patience} que estamos
+estableciendo no sea suficiente. Sin embargo,
+
+    \hypertarget{la-verdadera-mejora-dropout}{%
+\section{La verdadera mejora :
+Dropout}\label{la-verdadera-mejora-dropout}}
+
+Tras este proceso de pruebas y mejoras, vamos a utilizar ahora la capa
+que nos va a dar un salto mayor en el acierto en el conjunto de test. Se
+trata de las capas \textbf{Dropout}.
+
+Las capas \emph{Dropout} harán que las neuronas de nuestro modelo tengan
+una probabilidad de dejar de ser entrenadas. En concreto, dada una
+probabilidad \emph{rate} que pasaremos como parámetro,lo que hará según
+la documentación de \emph{keras} es poner los inputs para esa neurona a
+0, lo cual nos ayudará a prevenir el overfitting.
+
+Dejar de entrenar ciertas neuronas prevendrá la creación de
+inter-dependencias entre las neuronas, lo que nos ayudará a obtener un
+modelo más robusto en cuanto a dependencias entre nodos.
+
+Vamos a definir un modelo basándonos en nuestro mejor modelo anterior.
+Haibing y Xiaodong en {[}@Haibing-Xiaodong{]} mencionan que aunque al
+principio se utilizaban solo \emph{dropouts} en capas que no estuvieran
+\emph{FC}, finalmente se encontró que usarlos también en capas \emph{FC}
+reduce el error en el \emph{test}, así que en nuestro modelo lo
+utilizaremos en ambas partes.
+
+{[}@Haibing-Xiaodong{]}: https://arxiv.org/pdf/1512.00242.pdf ``Towards
+Dropout Training for Convolutional Neural Networks''
+
+Pasamos a definir el modelo. Vemos primero la tabla, y luego el código.
+
+\begin{table}[H]
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+Layer No. & Layer Type         & \begin{tabular}[c]{@{}c@{}}Kernel size\\ conv layers\end{tabular} & \begin{tabular}[c]{@{}c@{}}Input | Output\\ dimension\end{tabular} & \begin{tabular}[c]{@{}c@{}}Input | Output\\ channels\\ conv layers\end{tabular} & \begin{tabular}[c]{@{}c@{}}Dropout rate\\ dropout layers\end{tabular} \\ \hline
+1         & Conv2D             & 3                                                                 & 30                                                                 & 3 | 6                                                                           & -                                                                     \\ \hline
+2         & Relu               & -                                                                 & 30 | 30                                                            & -                                                                               & -                                                                     \\ \hline
+3         & BatchNormalization & -                                                                 & 30 | 30                                                            & -                                                                               & -                                                                     \\ \hline
+4         & MaxPooling2D       & 2                                                                 & 30 | 15                                                            & -                                                                               & -                                                                     \\ \hline
+5         & Dropout            & -                                                                 & 15 | 15                                                            & -                                                                               & 0.25                                                                  \\ \hline
+6         & Conv2D             & 3                                                                 & 15 | 13                                                            & 6 | 16                                                                          & -                                                                     \\ \hline
+7         & Relu               & -                                                                 & 13 | 13                                                            & -                                                                               & -                                                                     \\ \hline
+8         & BatchNormalization & -                                                                 & 13 | 13                                                            & -                                                                               & -                                                                     \\ \hline
+9         & Conv2D             & 3                                                                 & 13 | 11                                                            & 16 | 32                                                                         & -                                                                     \\ \hline
+10        & MaxPooling2D       & 2                                                                 & 11 | 5                                                             & -                                                                               & -                                                                     \\ \hline
+11        & Dropout            & -                                                                 & 5 | 5                                                              & -                                                                               & 0.25                                                                  \\ \hline
+12        & Flatten            & -                                                                 & 5 | 800                                                            & -                                                                               & -                                                                     \\ \hline
+13        & Linear             & -                                                                 & 800 | 100                                                          & -                                                                               & -                                                                     \\ \hline
+14        & Relu               & -                                                                 & 100 | 100                                                          & -                                                                               & -                                                                     \\ \hline
+15        & BatchNormalization & -                                                                 & 100 | 100                                                          & -                                                                               & -                                                                     \\ \hline
+16        & Dropout            & -                                                                 & 100 | 100                                                          & -                                                                               & 0.5                                                                   \\ \hline
+17        & Linear             & -                                                                 & 100 | 25                                                           & -                                                                               & -                                                                     \\ \hline
+\end{tabular}
+\end{table}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{0}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{dropout\PYZus{}basenet}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+  \PY{n}{model} \PY{o}{=} \PY{n}{Sequential}\PY{p}{(}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} First conv +  relu}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Conv2D}\PY{p}{(}\PY{l+m+mi}{6}\PY{p}{,}\PY{n}{kernel\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{input\PYZus{}shape}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{32}\PY{p}{,}\PY{l+m+mi}{32}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Batch Normalization}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{BatchNormalization}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Reduce size}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{MaxPooling2D}\PY{p}{(}\PY{n}{pool\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Dropout}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Dropout}\PY{p}{(}\PY{l+m+mf}{0.25}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Second Conv + relu}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Conv2D}\PY{p}{(}\PY{l+m+mi}{16}\PY{p}{,}\PY{n}{kernel\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Another Batch Normalization}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{BatchNormalization}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Third conv, bigger output size + relu}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Conv2D}\PY{p}{(}\PY{l+m+mi}{32}\PY{p}{,}\PY{n}{kernel\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,}\PY{n}{activation} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Reduce size}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{MaxPooling2D}\PY{p}{(}\PY{n}{pool\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Dropout}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Dropout}\PY{p}{(}\PY{l+m+mf}{0.25}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} 4th conv, 3x3 this time}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Conv2D}\PY{p}{(}\PY{l+m+mi}{64}\PY{p}{,}\PY{n}{kernel\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,}\PY{n}{activation} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Flatten before FC}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Flatten}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} FC. add Relu output size = 100}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Dense}\PY{p}{(}\PY{l+m+mi}{100}\PY{p}{,} \PY{n}{activation} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Batch normalization in FC}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{BatchNormalization}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Dropout }
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Dropout}\PY{p}{(}\PY{l+m+mf}{0.5}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} FC and softmax}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Dense}\PY{p}{(}\PY{l+m+mi}{25}\PY{p}{,}\PY{n}{activation} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{softmax}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+
+  \PY{k}{return} \PY{n}{model}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Hemos añadido: - \emph{Dropout} con \(rate = 0.25\) después del primer
+\emph{MaxPooling} - \emph{Dropout} con \(rate = 0.25\) después del
+segundo (y último) \emph{MaxPooling) - }Dropout* con \(rate = 0.5\)
+antes de la última capa \emph{Dense+Softmax}
+
+Veamos el comportamiento del mismo.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{53}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{model9} \PY{o}{=} \PY{n}{dropout\PYZus{}basenet}\PY{p}{(}\PY{p}{)}
+\PY{n}{hist10} \PY{o}{=} \PY{n}{train\PYZus{}and\PYZus{}show}\PY{p}{(}\PY{n}{model9}\PY{p}{,}\PY{n}{data\PYZus{}augmentation\PYZus{}datagen}\PY{p}{,}\PY{n}{batch\PYZus{}size} \PY{o}{=} \PY{l+m+mi}{32}\PY{p}{,}\PY{n}{epochs} \PY{o}{=} \PY{l+m+mi}{50}\PY{p}{)}
+\PY{n}{showEvolution}\PY{p}{(}\PY{n}{hist10}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+TEST SCORE =  0.4936
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{output_53_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{output_53_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Sorprendentemente, tenemos que la gráfica de validación está por debajo
+en la función de pérdida. Esto es una noticia bastante buena, aunque
+difícil de comprender. Significa que nuestro modelo está generalizando
+mejor incluso de lo que puede conseguir solo con el \emph{train
+dataset}.
+
+Se podría pensar que los ratios de \emph{Dropout} que se están dando son
+demasiado altos. Sin embargo, un ratio más pequeño haría que
+prácticamente no se notara respecto a otras ejecuciones que no tuvieran
+\emph{Dropout}. Vamos a hacer la prueba, cambiaremos el \emph{rate} de
+los tres anteriores por \(0.1\) en el próximo modelo, lo ejecutaremos y
+luego los compararemos.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{0}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{low\PYZus{}dropout\PYZus{}basenet}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+  \PY{n}{model} \PY{o}{=} \PY{n}{Sequential}\PY{p}{(}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} First conv +  relu}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Conv2D}\PY{p}{(}\PY{l+m+mi}{6}\PY{p}{,}\PY{n}{kernel\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{input\PYZus{}shape}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{32}\PY{p}{,}\PY{l+m+mi}{32}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Batch Normalization}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{BatchNormalization}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Reduce size}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{MaxPooling2D}\PY{p}{(}\PY{n}{pool\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Dropout}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Dropout}\PY{p}{(}\PY{l+m+mf}{0.1}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Second Conv + relu}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Conv2D}\PY{p}{(}\PY{l+m+mi}{16}\PY{p}{,}\PY{n}{kernel\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Another Batch Normalization}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{BatchNormalization}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Third conv, bigger output size + relu}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Conv2D}\PY{p}{(}\PY{l+m+mi}{32}\PY{p}{,}\PY{n}{kernel\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,}\PY{n}{activation} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Reduce size}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{MaxPooling2D}\PY{p}{(}\PY{n}{pool\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Dropout}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Dropout}\PY{p}{(}\PY{l+m+mf}{0.1}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} 4th conv, 3x3 this time}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Conv2D}\PY{p}{(}\PY{l+m+mi}{64}\PY{p}{,}\PY{n}{kernel\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,}\PY{n}{activation} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Flatten before FC}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Flatten}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} FC. add Relu output size = 100}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Dense}\PY{p}{(}\PY{l+m+mi}{100}\PY{p}{,} \PY{n}{activation} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Batch normalization in FC}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{BatchNormalization}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Dropout }
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Dropout}\PY{p}{(}\PY{l+m+mf}{0.1}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} FC and softmax}
+  \PY{n}{model}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{Dense}\PY{p}{(}\PY{l+m+mi}{25}\PY{p}{,}\PY{n}{activation} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{softmax}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+
+  \PY{k}{return} \PY{n}{model}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{55}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{model10} \PY{o}{=} \PY{n}{low\PYZus{}dropout\PYZus{}basenet}\PY{p}{(}\PY{p}{)}
+\PY{n}{hist11} \PY{o}{=} \PY{n}{train\PYZus{}and\PYZus{}show}\PY{p}{(}\PY{n}{model10}\PY{p}{,}\PY{n}{data\PYZus{}augmentation\PYZus{}datagen}\PY{p}{,}\PY{n}{batch\PYZus{}size} \PY{o}{=} \PY{l+m+mi}{32}\PY{p}{,}\PY{n}{epochs} \PY{o}{=} \PY{l+m+mi}{50}\PY{p}{)}
+\PY{n}{showEvolution}\PY{p}{(}\PY{n}{hist11}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+TEST SCORE =  0.58
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{output_56_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{output_56_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Y, con esto, acabamos de obtener el mejor \emph{test\_score} hasta
+ahora. Vemos como, en comparación con la anterior ejecución con
+\emph{Dropout}, las gráficas de validación quedan ahora (como es de
+esperar), con peores resultados que las gráficas de \emph{training}.
+
+Sin embargo, es un muy buen resultado pues vemos que el \emph{accuracy}
+de validación queda muy cerca de la gráfica del \emph{accuracy} de
+\emph{training}.
+
+Veamos la comparación entre ambas gráficas por ver quién podríamos decir
+que es ``mejor''.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{56}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{compareHists}\PY{p}{(}\PY{p}{[}\PY{n}{hist10}\PY{p}{,}\PY{n}{hist11}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{High Dropout}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Low Dropout}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{output_58_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{output_58_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Se ve claramente como , teniendo un \emph{Dropout} bajo, tenemos una
+gráfica de pérdida \textbf{mayor} (lo cual es peor), y una gráfica de
+\textbf{accuracy} mayor, por lo que podríamos decir que \emph{en
+general}, es mejor utilizar unos niveles más altos de \emph{Dropout}.
+
+
+    
+    
+ \hypertarget{transferencia-de-modelos-y-fine-tuning}{%
+\section{Transferencia de Modelos y Fine
+Tuning}\label{transferencia-de-modelos-y-fine-tuning}}
+
+En esta sección, trataremos de utilizar modelos ya existentes sobre un
+problema concreto que se nos ha proporcionado: la clasificación de tipos
+de pájaros. Utilizaremos el modelos previamente entrenados y veremos
+cómo de bien funciona este modelo sobre nuestro problema.
+
+A partir de ahora utilizaremos una base de datos diferente. Será la base
+de datos \emph{Caltech-UCSD}. Este conjunto tiene 200 clases diferentes
+con 3000 imágenes en el \emph{train set} y 3033 en el \emph{test set}.
+Dejaremos de nuevo un \(10\%\) del \emph{train set} para la validación.
+
+\hypertarget{transferencia-de-modelos}{%
+\subsection{Transferencia de modelos}\label{transferencia-de-modelos}}
+
+Vamos a usar como extractor de características el modelo
+\textbf{ResNet50}, preentrenado en \emph{ImageNet}. Especificaremos la
+opción \emph{pooling = `avg'}, para que se nos devuelva de la función el
+modelo con una capa \emph{GlobalAveragePooling} al final, teniendo
+entonces la salida en una dimensión.
+
+Con el parámetro \emph{include\_top = False}, estamos quitando la última
+capa que clasificaba las imágenes, así que nos servirá para extraer las
+características, que es lo que queremos. A la función que nos creará el
+modelo A la función que nos crea el modelo, se le pasará un parámetro
+\emph{freeze} , que nos servirá para \emph{fine-tuning} y será explicado
+más adelante.
+
+Tendremos como salida un vector de 2048 características, con el que
+podremos entrenar otro modelo. Para comenzar, lo usaremos como extractor
+de características y añadiremos únicamente una capa \emph{Dense} para
+comprobar si las características extraidas son buenas para nuestro
+modelo o no.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{0}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{res\PYZus{}net\PYZus{}50}\PY{p}{(}\PY{n}{freeze} \PY{o}{=} \PY{k+kc}{True}\PY{p}{,}\PY{n}{num\PYZus{}freeze} \PY{o}{=} \PY{l+m+mi}{0}\PY{p}{)}\PY{p}{:}
+  \PY{n}{resnet50} \PY{o}{=} \PY{n}{ResNet50}\PY{p}{(}\PY{n}{weights}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{imagenet}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} 
+                      \PY{n}{include\PYZus{}top}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,}
+                      \PY{n}{pooling}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{avg}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                      \PY{n}{input\PYZus{}shape}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{224}\PY{p}{,}\PY{l+m+mi}{224}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Freeze layers for fine\PYZhy{}tuning}
+  \PY{k}{if} \PY{n}{freeze}\PY{p}{:}
+    \PY{k}{for} \PY{n}{layer} \PY{o+ow}{in} \PY{n}{resnet50}\PY{o}{.}\PY{n}{layers}\PY{p}{[}\PY{p}{:}\PY{n}{num\PYZus{}freeze}\PY{p}{]}\PY{p}{:}
+      \PY{k}{if} \PY{p}{(}\PY{o+ow}{not} \PY{n+nb}{isinstance}\PY{p}{(}\PY{n}{layer}\PY{p}{,} \PY{n}{keras}\PY{o}{.}\PY{n}{layers}\PY{o}{.}\PY{n}{BatchNormalization}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+        \PY{n}{layer}\PY{o}{.}\PY{n}{trainable} \PY{o}{=} \PY{k+kc}{False}
+      
+  \PY{c+c1}{\PYZsh{} new model to add softmax}
+  \PY{n}{x} \PY{o}{=} \PY{n}{resnet50}\PY{o}{.}\PY{n}{output}
+  \PY{c+c1}{\PYZsh{} Adding softmax}
+  \PY{n}{x} \PY{o}{=} \PY{n}{Dense}\PY{p}{(}\PY{l+m+mi}{200}\PY{p}{,}\PY{n}{activation} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{softmax}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+  \PY{n}{model} \PY{o}{=} \PY{n}{Model}\PY{p}{(}\PY{n}{inputs} \PY{o}{=} \PY{n}{resnet50}\PY{o}{.}\PY{n}{input}\PY{p}{,} \PY{n}{outputs} \PY{o}{=} \PY{n}{x}\PY{p}{)}
+  \PY{k}{return} \PY{n}{model}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{model} \PY{o}{=} \PY{n}{res\PYZus{}net\PYZus{}50}\PY{p}{(}\PY{n}{freeze} \PY{o}{=} \PY{k+kc}{True}\PY{p}{)}
+
+\PY{n}{hist} \PY{o}{=} \PY{n}{train\PYZus{}and\PYZus{}show}\PY{p}{(}\PY{n}{model}\PY{p}{,}\PY{n}{data\PYZus{}augmentation\PYZus{}datagen}\PY{p}{,}\PY{n}{data\PYZus{}loader} \PY{o}{=} \PY{n}{load\PYZus{}caltech\PYZus{}data}\PY{p}{,}\PY{n}{epochs} \PY{o}{=} \PY{l+m+mi}{10}\PY{p}{)}
+\PY{n}{showEvolution}\PY{p}{(}\PY{n}{hist}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+TEST SCORE =  0.3425651170458292
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{part2/output_9_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{part2/output_9_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Podemos observar varias cosas de estos resultados
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  El modelo entrena muy bien en el conjunto de \emph{train}. Esto es
+  fácilmente observable en que la función \emph{loss} tiende a \(0\)
+  solamente con 10 épocas. Además, también llega casi a un \(100\%\) de
+  acierto en este mismo conjunto.
+\item
+  Sin embargo, podemos ver que estas dos funciones tienen valores
+  bastante malos en el conjunto de validación, comparados con los que
+  hemos visto que toma en el conjunto de \emph{train}.
+\item
+  El \emph{score} que obtenemos al final (entorno a \(0.35\)), se
+  asemeja bastante a los valores que se obtienen durante las épocas en
+  el conjunto de validación. Sin embargo, se aleja bastante (al igual
+  que los de validación), del acierto en el conjunto de \emph{train}.
+\end{enumerate}
+
+Con estos tres puntos, podemos decir que el modelo está aprendiendo
+bastante pero solamente del conjunto de entrenamiento y no es un buen
+aprendizaje para la base de datos en general.
+
+\hypertarget{fine--tuning}{%
+\subsection{Fine- Tuning}\label{fine--tuning}}
+
+En el uso práctico de \emph{CNNs}, los modelos suelen tener una cantidad
+inmensa de parámetros que es complicado entrenar. Es por ello que se
+suele utilizar \textbf{\emph{fine-tuning}} sobre estos modelos para no
+tener que entrenarlos de forma completa y partir ya de un entrenamiento
+previo de estos. Esto se puede hacer de forma general porque el
+entrenamiento que suelen tener ha sido hecho en \emph{datasets} de
+tamaño mucho mayor que el que nosotros utilizaremos normalmente (como en
+este caso, que el número de imágenes que tenemos es bastante reducido,
+poco más de 6K), y por tanto el modelo habrá aprendido características
+que serán potencialmente buenas para nuestros datos.
+
+Una práctica bastante recomendada al hacer \emph{fine-tuning} es la de
+hacer \textbf{freeze}, que consiste en congelar determinadas capas de
+nuestro modelo para que , si vuelves a entrenar el modelo de forma
+completa, estas capas no hagan el entrenamiento.
+
+Esto podría hacerse para mantener las primeras capas, que suelen
+preocuparse de recoger características más generales (curvas,bordes),
+intactas pues queremos mantener ese conocimiento en nuestro modelo. Es
+por ello que pasaremos \emph{freeze = true} cuando queramos hacer
+\emph{fine-tuning} de nuestra red, y esto hará que todas las capas del
+modelo inicial se congelen.
+
+Hay que tener cuidado pues parece que hay un \textbf{bug}, y
+\emph{keras} no congela bien las capas que son de
+\emph{BatchNormalization}. Es por ello por lo que hemos añadido un
+\emph{if} en nuestro código que comprueba si es o no una capa de
+\emph{BatchNormalization}, y si lo es, no congela esa capa. De todos
+modos, estas capas son \textbf{no-entrenables}, así que no supone un
+problema para el entrenamiento de nuestro modelo.
+
+Vamos ahora a probar a hacer \emph{fine-tuning} con la red completa, por
+lo que será suficiente enviar el parámetro \emph{freeze = False}.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{model2} \PY{o}{=} \PY{n}{res\PYZus{}net\PYZus{}50}\PY{p}{(}\PY{n}{freeze} \PY{o}{=} \PY{k+kc}{False}\PY{p}{)}
+
+\PY{n}{hist2} \PY{o}{=} \PY{n}{train\PYZus{}and\PYZus{}show}\PY{p}{(}\PY{n}{model2}\PY{p}{,}\PY{n}{data\PYZus{}augmentation\PYZus{}datagen}\PY{p}{,}\PY{n}{data\PYZus{}loader} \PY{o}{=} \PY{n}{load\PYZus{}caltech\PYZus{}data}\PY{p}{,}\PY{n}{epochs} \PY{o}{=} \PY{l+m+mi}{10}\PY{p}{)}
+\PY{n}{showEvolution}\PY{p}{(}\PY{n}{hist2}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+TEST SCORE =  0.36993076162215627
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{part2/output_11_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{part2/output_11_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Las gráficas de validación parecen en este caso estar más alejadas del
+\emph{training} que en el caso anterior. Sin embargo, también parecen un
+poco menos estabilizadas que las anteriores, por lo que con el paso de
+las épocas podrían ir acerándose más a los buenos resultados también en
+la validación. Vamos a ver una comparación entre las funciones de
+pérdida y de \emph{accuracy} en el conjunto de validación para los dos
+tipos de modelos.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{compareHists}\PY{p}{(}\PY{p}{[}\PY{n}{hist}\PY{p}{,}\PY{n}{hist2}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Freezed}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Not Freezed}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{part2/output_13_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{part2/output_13_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Podemos ver como, al no congelar el modelo: - La función depérdida es
+menor - El \emph{accuracy} en la validación acaba siendo mayor aunque
+tarde un poco en superar al modelo que sí está congelado.
+
+Esto podría indicar que al fin y al cabo el modelo que no congela
+acabará ajustando los datos mejor que el modelo que utiliza como
+extractor de características a \emph{ResNet50}.
+
+\hypertarget{auxf1adiendo-capas-a-nuestro-extractor-de-caracteruxedsticas}{%
+\subsection{Añadiendo capas a nuestro extractor de
+características}\label{auxf1adiendo-capas-a-nuestro-extractor-de-caracteruxedsticas}}
+
+Vamos a probar a añadir algunas capas más a parte de únicamente el
+\emph{Softmax} y \emph{Dense} a Resnet, para ver si conseguimos mejorar
+algo su resultado.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{0}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{res\PYZus{}net\PYZus{}50\PYZus{}plus}\PY{p}{(}\PY{n}{freeze} \PY{o}{=} \PY{k+kc}{True}\PY{p}{,}\PY{n}{num\PYZus{}freeze} \PY{o}{=} \PY{l+m+mi}{0}\PY{p}{)}\PY{p}{:}
+  \PY{n}{resnet50} \PY{o}{=} \PY{n}{ResNet50}\PY{p}{(}\PY{n}{weights}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{imagenet}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} 
+                      \PY{n}{include\PYZus{}top}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,}
+                      \PY{n}{pooling}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{avg}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                      \PY{n}{input\PYZus{}shape}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{224}\PY{p}{,}\PY{l+m+mi}{224}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} Freeze layers for fine\PYZhy{}tuning}
+  \PY{k}{if} \PY{n}{freeze}\PY{p}{:}
+    \PY{k}{for} \PY{n}{layer} \PY{o+ow}{in} \PY{n}{resnet50}\PY{o}{.}\PY{n}{layers}\PY{p}{[}\PY{p}{:}\PY{n}{num\PYZus{}freeze}\PY{p}{]}\PY{p}{:}
+      \PY{k}{if} \PY{p}{(}\PY{o+ow}{not} \PY{n+nb}{isinstance}\PY{p}{(}\PY{n}{layer}\PY{p}{,} \PY{n}{keras}\PY{o}{.}\PY{n}{layers}\PY{o}{.}\PY{n}{BatchNormalization}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+        \PY{n}{layer}\PY{o}{.}\PY{n}{trainable} \PY{o}{=} \PY{k+kc}{False}
+      
+  \PY{c+c1}{\PYZsh{} new model to add softmax}
+  \PY{n}{x} \PY{o}{=} \PY{n}{resnet50}\PY{o}{.}\PY{n}{output}
+  \PY{c+c1}{\PYZsh{} Adding softmax}
+  \PY{n}{x} \PY{o}{=} \PY{n}{Dense}\PY{p}{(}\PY{l+m+mi}{1024}\PY{p}{,}\PY{n}{activation} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+  \PY{n}{x} \PY{o}{=} \PY{n}{Dropout}\PY{p}{(}\PY{l+m+mf}{0.5}\PY{p}{)}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+  \PY{n}{x} \PY{o}{=} \PY{n}{BatchNormalization}\PY{p}{(}\PY{p}{)}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+  \PY{n}{x} \PY{o}{=} \PY{n}{Dense}\PY{p}{(}\PY{l+m+mi}{512}\PY{p}{)}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+  \PY{n}{x} \PY{o}{=} \PY{n}{Dense}\PY{p}{(}\PY{l+m+mi}{256}\PY{p}{,}\PY{n}{activation} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{relu}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+  \PY{n}{x} \PY{o}{=} \PY{n}{Dense}\PY{p}{(}\PY{l+m+mi}{200}\PY{p}{,}\PY{n}{activation} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{softmax}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+  
+  \PY{n}{model} \PY{o}{=} \PY{n}{Model}\PY{p}{(}\PY{n}{inputs} \PY{o}{=} \PY{n}{resnet50}\PY{o}{.}\PY{n}{input}\PY{p}{,} \PY{n}{outputs} \PY{o}{=} \PY{n}{x}\PY{p}{)}
+  \PY{k}{return} \PY{n}{model}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Hemos añadido después de las capas de \emph{ResNet50} las siguientes
+capas para tratar de realizar una disminución progresiva de tamaño: -
+Una capa \emph{Dense(1024)}, para reducir el tamaño a la mitad, seguida
+por una activación \emph{Relu} - Un \emph{Dropout} de \(rate = 0.5\),
+para tratar de eliminar un gran número de parámetros - Otra capa
+\emph{Dense(512)}, reduciendo de nuevo el tamaño - Una última capa
+\emph{Dense(256)} antes de la capa que tiene la activación
+\emph{Softmax}
+
+Veamos si da buenos resultados:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{model\PYZus{}plus} \PY{o}{=} \PY{n}{res\PYZus{}net\PYZus{}50\PYZus{}plus}\PY{p}{(}\PY{n}{freeze} \PY{o}{=} \PY{k+kc}{True}\PY{p}{,}\PY{n}{num\PYZus{}freeze} \PY{o}{=} \PY{l+m+mi}{10}\PY{p}{)}
+\PY{n}{hist\PYZus{}plus} \PY{o}{=} \PY{n}{train\PYZus{}and\PYZus{}show}\PY{p}{(}\PY{n}{model\PYZus{}plus}\PY{p}{,}\PY{n}{data\PYZus{}augmentation\PYZus{}datagen}\PY{p}{,}\PY{n}{epochs} \PY{o}{=} \PY{l+m+mi}{10}\PY{p}{)}
+\PY{n}{showEvolution}\PY{p}{(}\PY{n}{hist\PYZus{}plus}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+      \begin{Verbatim}[commandchars=\\\{\}]
+TEST SCORE =  0.14968677876689745
+    \end{Verbatim}
+    
+    
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{part2/output_17_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{part2/output_17_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Los resultados en cuanto a \emph{test score} son estrepitosos. El modelo no es capaz de alcanzar ni un
+acierto de \(0.15\) en el conjunto de test, aunque su función de pérdida
+disminuya de forma tan drástica, vemos que el acierto en la validación
+no aumenta tanto como el acierto en \emph{training}, que, por otro lado,
+aumenta de forma mucho más lenta que en los casos anteriores.
+
+Descartaremos estos cambios al no haber sido una mejora sustancial del
+modelo.
+
+    \hypertarget{usando-fine-tuning-en-parte-de-la-red}{%
+\subsection{Usando Fine-Tuning en parte de la
+red}\label{usando-fine-tuning-en-parte-de-la-red}}
+
+Por último, vamos a hacer una pequeña prueba. Como he comentado antes,
+en fine-tuning puede decidirse congelar una serie de capas, y no todas.
+En concreto, podría ser interesante congelar todas las primeras capas y
+dejar las Z últimas sin congelar, para tratar de usar las primeras como
+extractores de ``características básicas'' de las imágenes , y entrenar
+las últimas para usarlas en nuestra base de datos concreta.
+
+Es para ello para lo que le hemos añadido a nuestro modelo un parámetro
+con el cual podremos indicar cuántos layers (empezando por el final)
+querremos no congelar. Vamos a hacer una prueba con Z=10, y veremos el
+resultado:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{model3} \PY{o}{=} \PY{n}{res\PYZus{}net\PYZus{}50}\PY{p}{(}\PY{n}{freeze} \PY{o}{=} \PY{k+kc}{True}\PY{p}{,}\PY{n}{num\PYZus{}freeze} \PY{o}{=} \PY{l+m+mi}{10}\PY{p}{)}
+\PY{n}{hist\PYZus{}freeze10} \PY{o}{=} \PY{n}{train\PYZus{}and\PYZus{}show}\PY{p}{(}\PY{n}{model3}\PY{p}{,}\PY{n}{data\PYZus{}augmentation\PYZus{}datagen}\PY{p}{,}\PY{n}{epochs} \PY{o}{=} \PY{l+m+mi}{10}\PY{p}{)}
+\PY{n}{showEvolution}\PY{p}{(}\PY{n}{hist\PYZus{}freeze10}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+      \begin{Verbatim}[commandchars=\\\{\}]
+TEST SCORE =  0.4038905374216947
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{part2/output_20_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{part2/output_20_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Podemos comprobar como, en este caso, se estabilizan más pronto las
+funciones tanto de validación como de pérdida
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{18}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{compareHists}\PY{p}{(}\PY{p}{[}\PY{n}{hist\PYZus{}freeze10}\PY{p}{,}\PY{n}{hist2}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Freeze 10}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Freeze all}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{part2/output_22_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.5\linewidth}{0.9\paperheight}}{part2/output_22_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Además, en esta comparación, vemos que si congelamos 10 capas la pérdida es menor y el acierto es mayor. Esto podría indicarnos que el modelo está extrayendo buenas características y entrenar las últimas capas podría estar ayudándonos incluso habiendo sido obtenido con los pesos de otra base de datos diferente.
+    
+    \hypertarget{conclusiones}{%
+\section{Conclusiones}\label{conclusiones}}
+
+Durante la práctica, hemos tratado de empezar con un modelo básico de
+red neuronal convolucional , \textbf{BaseNet} y hemos ido tratando de
+mejorarla poco a poco, hasta llegar a un modelo que tiene un porcentaje
+de acierto en el conjunto de \emph{test} bastante decente, \(0.58\).
+
+Hemos descubierto que muchas veces, añadir más épocas o más capas a los
+modelos pueden llevarnos a \emph{overfitting} y por tanto no nos
+interesa introducir capas aleatoriamente ni poner un número de épocas
+muy elevado.
+
+Además, hemos encontrado que utilizar \emph{Dropouts} mejora
+sustancialmente los resultados en cuanto a menor diferencia entre las
+gráficas de la función de pérdida del conjunto de validación y el de
+entrenamiento, así como de la función de acierto, por lo que es una de
+las mejores mejoras que se le pueden añadir a nuestro modelo, aunque hay
+que tener cuidado de establecer un \(rate\) adecuado.
+
+Por último, hemos tratado de usar una red ya entrenada ,
+\textbf{ResNet50}, con los pesos de otro conjunto de Datos para ver cómo
+se comporta utilizándola en una base de datos propia. Hemos obtenido
+unos resultados que son, en general, bastante malos, no superando el
+\(40\%\) de acierto incluso tratando de hacer diversas modificaciones y
+mejoras, como añadir capas, o congelar un número determinado de capas
+mediante \emph{fine-tuning}.
+
+Aunque no esté considerado en una sección como tal, es posible que pudieran ser considerados como parte del bonus la mejora con \emph{Dropout} y la mejora con \emph{fine-tuning} de no todas las capas.
+
+\hypertarget{bibliografuxeda}{%
+\section{Bibliografía}\label{bibliografuxeda}}
+
+https://marubon-ds.blogspot.com/2017/08/how-to-make-fine-tuning-model.html
+
+https://keras.io/preprocessing/image/
+
+https://en.m.wikipedia.org/wiki/Softmax\_function
+
+https://www.pyimagesearch.com/2019/07/08/keras-imagedatagenerator-and-data-augmentation/
+
+https://flyyufelix.github.io/2016/10/03/fine-tuning-in-keras-part1.html
+
+https://arxiv.org/pdf/1512.00242.pdf
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
